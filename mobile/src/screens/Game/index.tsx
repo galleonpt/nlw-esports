@@ -10,10 +10,13 @@ import { GameParams } from "../../@types/navigation";
 import { THEME } from "../../theme";
 import logo from "../../assets/logo-nlw-esports.png";
 import { Heading } from "../../components/Heading";
+import { DuoMatch } from "../../components/DuoMatch";
 import { DuoCard, DuoCardProps } from "../../components/DuoCard";
 
 export function Game() {
   const [duos, setDuos] = useState<DuoCardProps[]>([]);
+  const [discordDuoSelected, setDiscordDuoSelected] = useState("");
+
   const route = useRoute();
   const game = route.params as GameParams;
 
@@ -21,6 +24,13 @@ export function Game() {
 
   function handleGoBack() {
     navigation.goBack();
+  }
+
+  // funcao executada ao carregar no botao de conectar
+  async function getDiscordUser(adsId: string) {
+    fetch(`http://192.168.1.5:3333/ads/${adsId}/discord`)
+      .then((response) => response.json())
+      .then((data) => setDiscordDuoSelected(data.discord));
   }
 
   useEffect(() => {
@@ -59,7 +69,7 @@ export function Game() {
           data={duos}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <DuoCard data={item} onConnect={() => {}} />
+            <DuoCard data={item} onConnect={() => getDiscordUser(item.id)} />
           )}
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -70,6 +80,18 @@ export function Game() {
           ListEmptyComponent={() => (
             <Text style={styles.emptyListText}>Sem anuncios publicados</Text>
           )}
+        />
+
+        {/* se tiver algum user selecionado a modal abre */}
+        <DuoMatch
+          visible={discordDuoSelected.length > 0}
+          discord={discordDuoSelected}
+          onClose={() => {
+            {
+              /* se alguem tocar no botao de fechar, o estado é alterado para vazio e a condiçao do visible faz com que a modal feche */
+            }
+            setDiscordDuoSelected("");
+          }}
         />
       </SafeAreaView>
     </Background>
