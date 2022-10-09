@@ -84,6 +84,6 @@ This project is under the MIT license. See the [LICENSE](LICENSE.md) for more in
 
 ## Credits
 
-## This readme was copied from [here](https://github.com/gbspecapedra/esports)
+This readme was copied from [here](https://github.com/gbspecapedra/esports)
 
 ---
